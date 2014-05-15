@@ -7,13 +7,13 @@
 
 #define N 1000
 
-int isPowOfTwo(int);
-void mainMenu();
+int isPowOfTwo(int); // Является ли число степенью двойки.
+void mainMenu(); // Вывод главного меню.
 
 int main(int argc, char **argv)
 {
 	mainMenu(); // Вывод главного меню.
-	char user = '1';
+	char user = '1'; // Индекс выбранного элемента меню.
 	
 	while (1)
 	{
@@ -21,21 +21,22 @@ int main(int argc, char **argv)
 		int count = 0; // Количество лишних символов.
 		while (getchar()!='\n') count++;
 		
-		while (!isdigit(user) || user - '0' < 1 || user - '0' > 3 || count > 0)
+		while (!isdigit(user) || user - '0' < 1 || user - '0' > 3 || count > 0) // Пункт меню выбран некорректно.
 		{
-			printf("Select an item: ");
+			printf("\nERROR: Item is incorrect.\nSelect an item: ");
 			scanf("%c", &user);
 			count = 0;
 			while (getchar()!='\n') count++;
 		}
 	
-		switch (user - '0')
+		switch (user - '0') // Обработка пунктов меню.
 		{
-			case 1:
-				printf("-------------------------\n");
-				printf(" Hamming Code Simulation\n");
-				printf("-------------------------\n");
+			case 1: // Генерация кода Хэмминга.
+				puts("-------------------------");
+				puts(" Hamming Code Simulation");
+				puts("-------------------------");
 				printf("Input a word: ");
+				
 				char data[N]; // Входные данные.
 				gets(data); 
 
@@ -48,9 +49,11 @@ int main(int argc, char **argv)
 					j++;
 				}
 				
-				while (!correct)
+				if (strlen(data) == 0) correct = 0;
+				
+				while (!correct) // Обработка ввода некорректных данных.
 				{
-					printf("ERROR: Incorrect word.\n");
+					printf("\nERROR: Incorrect word.\n");
 					printf("Input a word: ");
 					gets(data); 
 					
@@ -62,6 +65,8 @@ int main(int argc, char **argv)
 						if (!isdigit(data[j]) || (data[j] - '0' != 0 && data[j] - '0' != 1)) correct = 0;
 						j++;
 					}
+					
+					if (strlen(data) == 0) correct = 0;
 				}
 				
 				int i = strlen(data); // Число информационных разрядов.
@@ -105,35 +110,29 @@ int main(int argc, char **argv)
 					}
 				}
 				
+				// Вывод результата работы алгоритма.
 				printf("Hamming code: ");
 				for (j=0; j<n; j++)
 					printf("%d", res[j]);
 				printf("\n");
 				
-				char err;
+				// Генерация ошибки в коде Хэмминга.
+				int err = 0;
 				printf("\nInput the index of error: ");
-				scanf("%c", &err);
+				scanf("%d", &err);
+
 				count = 0;
-				while (getchar()!='\n') count++;
+				while (getchar()!='\n');
 				
-				while (!isdigit(err) || count > 0)
+				while (err < 0 || err >= n)
 				{
-					count = 0;
-					printf ("ERROR: Index must be a natural number.\n");
-					printf("Input the index of error: ");
-					scanf("%c", &err);
-					while (getchar()!='\n') count++;
-				}
-				while (err - '0' < 0 || err - '0' >= n)
-				{
-					while (getchar()!='\n');
-					printf ("%d\n", n);
 					printf ("ERROR: The index must be included in the interval [%d; %d].\n", 0, n-1);
 					printf("Input the index of error: ");
-					scanf("%c", &err);
+					scanf("%d", &err);
+					while (getchar()!='\n');
 				}
 
-				if (res[err -'0']) res[err -'0'] = 0; else res[err -'0'] = 1; // Генерация ошибки в коде.
+				if (res[err]) res[err] = 0; else res[err] = 1; // Генерация ошибки в коде.
 				
 				printf("\nIncorrect code: ");
 				for (j=0; j<n; j++)
@@ -174,30 +173,27 @@ int main(int argc, char **argv)
 				
 				free(res);
 				
-				printf("\nInput any symbol to exit to main menu: ");
+				puts("\nPress any key to exit to main menu.");
 				getch();
-				while (getchar()!='\n');
 				system("cls");
 				mainMenu();
 			
 				break;
 			
 			case 2:
-				printf("-------------------------\n");
-				printf("   About the program\n");
-				printf("-------------------------\n");
-				printf("Authors:\n");
-				printf("\tIvashkova K.P.,\n");
-				printf("\tIgnatova U.A.,\n");
-				printf("\tOsadchaya T.S.,\n");
-				printf("\tPutintseva A.A..\n");
-				printf("University ITMO, Department of Instrumentation Technology, Group 2652.\n");
-				printf("Saint-Petersburg, 2014\n");
+				puts("-------------------------");
+				puts("   About the program");
+				puts("-------------------------");
+				puts("Authors:");
+				puts("\tIvashkova K.P.,");
+				puts("\tIgnatova I.A.,");
+				puts("\tOsadchaia T.S.,");
+				puts("\tPutintseva A.A.");
+				puts("University ITMO, Department of Instrumentation Technology, Group 2652.");
+				puts("Saint-Petersburg, 2014.");
 				
-				printf("\nInput any symbol to exit to main menu: ");
-				while (getchar()!='\n');
+				puts("\nPress any key to exit to main menu.");
 				getch();
-				while (getchar()!='\n');
 				system("cls");
 				mainMenu();
 				
